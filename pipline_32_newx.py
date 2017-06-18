@@ -5,9 +5,7 @@ import seaborn as sns
 from skimage.io import imread, imshow
 import cv2
 
-#matplotlib inline
 import plotly.offline as py
-#py.init_notebook_mode(connected=True)
 import plotly.graph_objs as go
 import plotly.tools as tls
 
@@ -59,8 +57,8 @@ network = max_pool_2d(network, 2)
 network = conv_2d(network, 16, 3, activation='relu')
 network = max_pool_2d(network, 2)
 
-network = fully_connected(network, 256, activation='relu')
-network = dropout(network, 0.25)
+network = fully_connected(network, 256, activation='relu')	#full network size checked 256, 512, 1024. finally 256 best. other two overfit tow quick. test data early get bad before training data performance converge
+network = dropout(network, 0.25)                              #drop out rate have checked 0.5, 0.25, 0.05; 0.25 is the best 0.05 is slow 200 not final converge
 
 network = fully_connected(network, 3, activation='softmax')
 network = regression(network, optimizer='adam',
@@ -71,14 +69,9 @@ model = tflearn.DNN(network, tensorboard_verbose=0)
 
 model.fit(X, Y, n_epoch=300, shuffle=True, validation_set=0.25,show_metric=True, batch_size=96, run_id='cvix_cnn')
 
-currently trying 1 layer converlution
-L2 is not good 
+#L2, L1  is not good, cause overfit quickly
 
 
-try x2:
-network = conv_2d(network, 1, 3, activation='relu')
-network = max_pool_2d(network, 2)
-network = conv_2d(network, 1, 3, activation='relu')
 
 
 
